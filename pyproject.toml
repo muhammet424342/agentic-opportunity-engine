@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-opportunity-engine"
+version = "0.1.0"
+description = "A memory-driven grant and hackathon decision agent powered by Sibyl Memory."
+requires-python = ">=3.10"
+dependencies = ["sibyl-memory-client>=0.4.1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+opportunity-engine = "opportunity_engine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
