@@ -52,7 +52,7 @@ This project reuses the author's earlier opportunity-discovery, SQLite queue, Te
 - [x] MIT license
 - [x] Load-bearing Sibyl Memory integration
 - [x] Fresh-session behavior test
-- [ ] Public GitHub repository
+- [x] Public GitHub repository
 - [ ] Live opportunity-source adapter
 - [ ] Base integration shown in product and demo
 - [ ] Two-to-five minute demo video
