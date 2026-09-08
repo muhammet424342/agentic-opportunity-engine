@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#0b0e12;font-family:'Inter',sans-serif}
+.wrap{position:relative;width:1280px;height:720px;background:radial-gradient(900px 500px at 70% 20%,rgba(40,120,110,.12),transparent 60%),#0b0e12;color:#e7ece9}
+.topbar{position:absolute;top:0;left:0;right:0;height:64px;display:flex;align-items:center;gap:14px;padding:0 34px;border-bottom:1px solid rgba(255,255,255,.06)}
+.dot{width:34px;height:34px;border:2px solid #cfd6d2;transform:rotate(45deg);position:relative}
+.dot:after{content:'';position:absolute;inset:6px;background:#7fe3cf}
+.brand{font-weight:700;font-size:22px;letter-spacing:.02em}
+.brand small{color:#7fe3cf;font-weight:500;font-size:15px;margin-left:10px;letter-spacing:.14em}
+.term{position:absolute;top:96px;left:34px;right:34px;bottom:150px;background:#0e1319;border:1px solid rgba(255,255,255,.08);border-radius:12px;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);padding:22px 26px;font-family:'JetBrains Mono',monospace;font-size:19px;line-height:1.5;overflow:hidden}
+.term .l{white-space:pre-wrap}
+.cmd{color:#e7ece9}.cmd .p{color:#7fe3cf;font-weight:700}
+.out{color:#aeb8b3}
+.apply{color:#7fe3cf;font-weight:700}.skip{color:#ff7a7a;font-weight:700}.review{color:#e8c06b}
+.pass{color:#7fe3cf;font-weight:700}
+.cursor{display:inline-block;width:10px;height:20px;background:#7fe3cf;vertical-align:-3px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.cap{position:absolute;left:0;right:0;bottom:0;height:132px;display:flex;align-items:center;justify-content:center;
+  padding:0 80px;background:linear-gradient(0deg,#0b0e12 70%,transparent)}
+.cap .t{font-size:30px;font-weight:700;text-align:center;line-height:1.25;max-width:1050px;opacity:0;transition:opacity .4s;
+  text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.cap .t b{color:#7fe3cf}.cap .t i{color:#ff9a9a;font-style:normal}
+</style></head><body>
+<div class=wrap>
+ <div class=topbar><div class=dot></div><div class=brand>Agentic Opportunity Engine<small>SIBYL LABS HACKATHON</small></div></div>
+ <div class=term id=term></div>
+ <div class=cap><div class=t id=cap></div></div>
+</div>
+<script>
+const term=document.getElementById('term'), cap=document.getElementById('cap');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function setCap(html){cap.style.opacity=0;setTimeout(()=>{cap.innerHTML=html;cap.style.opacity=1;},250);}
+let cur=null;
+function newLine(cls){const d=document.createElement('div');d.className='l '+(cls||'');term.appendChild(d);term.scrollTop=term.scrollHeight;return d;}
+async function type(text){const d=newLine('cmd');d.innerHTML='<span class="p">$</span> ';const span=document.createElement('span');d.appendChild(span);
+  const cu=document.createElement('span');cu.className='cursor';d.appendChild(cu);
+  for(const ch of text){span.textContent+=ch;await sleep(26);} cu.remove(); term.scrollTop=term.scrollHeight;}
+function out(html,cls){const d=newLine('out '+(cls||''));d.innerHTML=html;term.scrollTop=term.scrollHeight;}
+async function run(){
+  await sleep(1000);
+  setCap('<b>Agentic Opportunity Engine</b> — a decision agent that remembers.');
+  await sleep(4200);
+  setCap('Problem: stateless scrapers produce links, not better decisions.');
+  await sleep(4600);
+  setCap('The hard part is remembering what happened and deciding better next time.');
+  await sleep(4600);
+
+  setCap('Session 1 — seed the builder profile, then rank opportunities.');
+  await sleep(1200);
+  await type('opportunity-engine --db demo.db seed'); await sleep(500);
+  out('Builder profile persisted in Sibyl Memory.'); await sleep(1600);
+  await type('opportunity-engine --db demo.db rank'); await sleep(600);
+  out(' <span class="apply">74  apply</span>   Sibyl Labs Hackathon | preferred stack: ai, base; verified skills: python');
+  await sleep(500);
+  out(' <span class="review">38  review</span>  Telegraph Application Track | preferred stack: ai, base; verified skills: python');
+  await sleep(400);
+  out('  <span class="skip">2  skip</span>    Generic Design Contest | reward/fit baseline');
+  await sleep(900);
+  setCap('Sibyl ranks the hackathon <b>APPLY</b> — from recalled skills &amp; stack.');
+  await sleep(5200);
+
+  setCap('Now persist the outcome through the official Sibyl Memory client.');
+  await sleep(1400);
+  await type('opportunity-engine --db demo.db outcome sibyl-2026 submitted'); await sleep(600);
+  out('Outcome persisted: sibyl-2026 -&gt; submitted'); await sleep(2600);
+
+  setCap('New terminal. New process. Same database. Rank again.');
+  await sleep(2600);
+  await type('opportunity-engine --db demo.db rank'); await sleep(600);
+  out(' <span class="review">38  review</span>  Telegraph Application Track | preferred stack: ai, base; verified skills: python');
+  await sleep(450);
+  out('  <span class="skip">2  skip</span>    Generic Design Contest | reward/fit baseline');
+  await sleep(450);
+  out('  <span class="skip">0  skip</span>    Sibyl Labs Hackathon | Sibyl recalled prior status: submitted');
+  await sleep(800);
+  setCap('The decision changes: <b>APPLY</b> &rarr; <i>SKIP</i>. No duplicate application.');
+  await sleep(5600);
+  setCap('&ldquo;Sibyl recalled prior status: submitted&rdquo; — recalled in a genuinely new process.');
+  await sleep(5200);
+
+  setCap('Load-bearing proof — the fresh-client memory test.');
+  await sleep(1400);
+  await type('pytest -q'); await sleep(700);
+  out('.                                                                        [100%]');
+  await sleep(400);
+  out('<span class="pass">1 passed</span> in 0.26s'); await sleep(2200);
+  setCap('Remove Sibyl and the agent forgets, duplicates, and can&rsquo;t learn from rejections.');
+  await sleep(5200);
+
+  setCap('A human-approval boundary stays before any real application is sent.');
+  await sleep(4600);
+  setCap('Next: live verified sources and Base-verifiable project evidence.');
+  await sleep(4600);
+  setCap('<b>Memory is the product.</b>');
+  await sleep(3200);
+  setCap('github.com/muhammet424342/agentic-opportunity-engine');
+  await sleep(4200);
+  window.__done=true;
+}
+run();
+</script></body></html>

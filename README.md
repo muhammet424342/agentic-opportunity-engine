@@ -55,5 +55,5 @@ This project reuses the author's earlier opportunity-discovery, SQLite queue, Te
 - [x] Public GitHub repository
 - [ ] Live opportunity-source adapter
 - [ ] Base integration shown in product and demo
-- [ ] Two-to-five minute demo video
+- [x] Two-to-five minute demo video (`docs/sibyl_demo.mp4`, 2:20)
 - [ ] Public demo post and build-log post
