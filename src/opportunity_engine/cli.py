@@ -25,6 +25,12 @@ def build_parser() -> argparse.ArgumentParser:
     outcome.add_argument("slug")
     outcome.add_argument("status", choices=["applied", "submitted", "rejected", "won"])
     outcome.add_argument("--reason", default="")
+    prune = sub.add_parser(
+        "prune", help="Tombstone entries that have not flipped a decision in N decisions"
+    )
+    prune.add_argument("--after", type=int, default=20, help="quiet decisions allowed")
+    trail = sub.add_parser("trail", help="Show the raw record, tombstones included")
+    trail.add_argument("slug")
     return parser
 
 
@@ -40,6 +46,15 @@ def main() -> None:
     elif args.command == "outcome":
         memory.remember_outcome(args.slug, args.status, args.reason)
         print(f"Outcome persisted: {args.slug} -> {args.status}")
+    elif args.command == "prune":
+        pruned = memory.prune(args.after)
+        print(
+            f"Tombstoned {len(pruned)} entry(s) quiet for {args.after}+ decisions: "
+            + (", ".join(pruned) or "none")
+        )
+    elif args.command == "trail":
+        record = memory.trail(args.slug)
+        print(record if record is not None else f"No record for {args.slug}")
     else:
         for decision in OpportunityEngine(memory).rank(DEMO_OPPORTUNITIES):
             reason = "; ".join(decision.reasons) or "reward/fit baseline"
